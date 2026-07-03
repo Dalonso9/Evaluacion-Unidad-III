@@ -135,6 +135,35 @@ server.get("/editar_ken",(req,res)=>{
     });
 });
 
+server.post("/actualizar_ken",(req,res)=>{
+
+    const id_recibido = req.body.id;
+    const nombre_recibido = req.body.nombre;
+    const tipo_ken_recibido = req.body.tipo_ken;
+    const dojos_recibido = req.body.dojos;
+
+    conexion.query("update kens set nombre=?,tipo_ken=?,dojos=? where id=?",[nombre_recibido,tipo_ken_recibido,dojos_recibido,id_recibido],(error,data)=>{
+        if(error||data.length==0){
+            const contenido = `
+            <h1>ERROR AL ACTUALIZAR KEN</h1>
+            <br>
+            <img src="images/lentesken.gif"><br><br>
+            <input type="button" name="btn" value="Regresar a la lista de Kens" onClick="location='/kens';">
+            `;
+            res.send(cabecera+contenido+final);
+        }
+        else{
+            const contenido = `
+            <script>
+                alert("Información Actualizada");\n
+                location="/kens";
+            </script>
+            `;
+            res.send(cabecera+contenido+final);
+        }
+    });
+});
+
 server.listen(3000, () => {
     console.log('Servidor iniciado en puerto 3000 (OK) ');
 });
