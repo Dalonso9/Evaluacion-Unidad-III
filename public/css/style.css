@@ -1,0 +1,55 @@
+body{
+    background-image: url("../images/wallpaper.jpg");
+    background-size: cover;
+    background-color: deeppink;
+    color:deeppink;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+table{
+    background-color: rgb(255 20 147 / 25%);
+    color: #ffffff;
+    padding: 5px 10px;
+    border-radius: 10px;
+    box-shadow:
+    0 0 1px #000000,
+    0 0 1px #000000,
+    0 0 1px #000000,
+    0 0 1px #000000;
+}
+
+h1 {
+    color: deeppink;
+    text-shadow:
+    0 0 5px #ffffff,
+    0 0 10px #ffffff,
+    0 0 20px #ffffff,
+    0 0 40px #ffffff;
+}
+
+h2 {
+    color: deeppink;
+    text-shadow:
+    0 0 2px #ffffff,
+    0 0 4px #ffffff,
+    0 0 8px #ffffff,
+    0 0 16px #ffffff;
+}
+
+input[type="button"] {
+    background-color: deeppink;
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+input[type="submit"] {
+    background-color: deeppink;
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
