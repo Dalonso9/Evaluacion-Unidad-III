@@ -11,7 +11,7 @@ const conexion = mysql.createConnection({
     host:'10.1.15.29',
     user:'alumno',
     password:'alumno',
-    database:'patriarcado'
+    database:'Diego_Herrera'
 });
 
 const cabecera = fs.readFileSync('public/header.html','utf8');
@@ -82,6 +82,56 @@ server.get("/kens",(req,res)=>{
             <input type="button" name="btn_nuevo" value="NUEVO KEN" onClick="location='/nuevo_ken';">
         `;
         res.send(cabecera+contenido+final);
+    });
+});
+
+server.get("/editar_ken",(req,res)=>{
+
+    const id_recibido = req.query.id;
+
+    conexion.query("select * from kens where id=?",[id_recibido],(error,data)=>{
+
+        if(error||data.length==0){
+            const contenido = `
+            <h1>NO EXISTE TAL KEN</h1>
+            <br>
+            <img src="images/lentesken.gif"><br><br>
+            <input type="button" name="btn" value="Regresar a la lista de Kens" onClick="location='/kens';">
+            `;
+            res.send(cabecera+contenido+final);
+        }
+        else{
+            const nombre_recibido = data[0].nombre;
+            const tipo_ken_recibido = data[0].tipo_ken;
+            const dojos_recibido = data[0].dojos;
+            const contenido = `
+                <form name="editark" action="/actualizar_ken" method="POST">
+                    <input type="hidden" name="id" value="${id_recibido}">
+                    <table border="1" width="275px">
+                        <tr>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td>NOMBRE:</td><td><input type="text" name="nombre" value="${nombre_recibido}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>TIPO KEN:</td><td><input type="text" name="tipo_ken" value="${tipo_ken_recibido}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>DOJOS:</td><td><input type="number" name="dojos" value="${dojos_recibido}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" align="center"><input type="submit" name="btn_actualizar" value="Actualizar Ken"></td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+                <img src="images/lentesken.gif">
+            `;
+            res.send(cabecera+contenido+final);
+        }
     });
 });
 
