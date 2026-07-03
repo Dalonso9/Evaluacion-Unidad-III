@@ -164,6 +164,67 @@ server.post("/actualizar_ken",(req,res)=>{
     });
 });
 
+server.get("/eliminar_ken",(req,res)=>{
+
+    const id_recibido = req.query.id;
+
+    conexion.query("select * from kens where id=?",[id_recibido],(error,data)=>{
+
+        if(error||data.length==0){
+            const contenido = `
+            <h1>NO EXISTE TAL KEN</h1>
+            <br>
+            <img src="images/lentesken.gif"><br><br>
+            <input type="button" name="btn" value="Regresar a la lista de Kens" onClick="location='/kens';">
+            `;
+            res.send(cabecera+contenido+final);
+        }
+        else{
+            const nombre_recibido = data[0].nombre;
+            const contenido = `
+                <h1>¿Esta seguro que desea eliminar al Ken ${nombre_recibido}?</h1>
+                <br>
+                <input type="button" name="btn1" value="SI" onClick="location='/confirmar_eliminacion?id=${id_recibido}';">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="button" name="btn2" value="NO" onClick="location='/kens';">
+                <br>
+                <img src="images/barbie.gif">
+            `;
+            res.send(cabecera+contenido+final);
+        }
+    });
+});
+
+server.get("/confirmar_eliminacion",(req,res)=>{
+
+    const id_recibido = req.query.id;
+
+    conexion.query("delete from kens where id=?",[id_recibido],(error,data)=>{
+
+        if(error||data.length==0){
+            const contenido = `
+            <h1>ERROR AL ELIMINAR KEN</h1>
+            <br>
+            <img src="images/lentesken.gif"><br><br>
+            <input type="button" name="btn" value="Regresar a la lista de Kens" onClick="location='/kens';">
+            `;
+            res.send(cabecera+contenido+final);
+        }
+        else{
+            const contenido = `
+                <script>
+                    alert("Ken Eliminado");\n
+                    location="/kens";
+                </script>
+            `;
+            res.send(cabecera+contenido+final);
+        }
+    });
+});
+
+
+
+
 server.listen(3000, () => {
     console.log('Servidor iniciado en puerto 3000 (OK) ');
 });
