@@ -112,7 +112,7 @@ server.get("/editar_ken",(req,res)=>{
                             <td>
                                 <table>
                                     <tr>
-                                        <td>NOMBRE:</td><td><input type="text" name="nombre" value="${nombre_recibido}"></td>
+                                        <td>NOMBRE:</td><td><input type="text" name="nombre" value="${nombre_recibido}" readonly></td>
                                     </tr>
                                     <tr>
                                         <td>TIPO KEN:</td><td><input type="text" name="tipo_ken" value="${tipo_ken_recibido}"></td>
@@ -222,8 +222,64 @@ server.get("/confirmar_eliminacion",(req,res)=>{
     });
 });
 
+server.get("/nuevo_ken",(req,res)=>{
 
+            const contenido = `
+                <form name="insertark" action="/insertar_ken" method="POST">
+                    <table border="1" width="275px">
+                        <tr>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td>NOMBRE:</td><td><input type="text" name="nombre" value=""></td>
+                                    </tr>
+                                    <tr>
+                                        <td>TIPO KEN:</td><td><input type="text" name="tipo_ken" value=""></td>
+                                    </tr>
+                                    <tr>
+                                        <td>DOJOS:</td><td><input type="number" name="dojos" value=""></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" align="center"><input type="submit" name="btn_insertar" value="Crear Ken"></td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+                <img src="images/coolken.gif">
+            `;
+            res.send(cabecera+contenido+final);
+});
 
+server.post("/insertar_ken",(req,res)=>{
+
+    const nombre = req.body.nombre;
+    const tipo_ken = req.body.tipo_ken;
+    const dojos = req.body.dojos;
+
+    conexion.query("insert into kens(nombre,tipo_ken,dojos) values(?,?,?)",[nombre,tipo_ken,dojos],(error,data)=>{
+
+        if(error||data.length==0){
+            const contenido = `
+            <h1>ERROR AL CREAR KEN</h1>
+            <br>
+            <img src="images/lentesken.gif"><br><br>
+            <input type="button" name="btn" value="Regresar a la lista de Kens" onClick="location='/kens';">
+            `;
+            res.send(cabecera+contenido+final);
+        }
+        else{
+            const contenido = `
+                <script>
+                    alert("Ken creado correctamente");\n
+                    location="/kens";
+                </script>
+            `;
+            res.send(cabecera+contenido+final);
+        }
+    });
+});
 
 server.listen(3000, () => {
     console.log('Servidor iniciado en puerto 3000 (OK) ');
